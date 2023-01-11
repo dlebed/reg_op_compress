@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <cstddef>
+#include <array>
 
 namespace hal {
 
@@ -16,17 +17,15 @@ struct reg_op_entry {
     uint32_t    value;
 };
 
-constexpr size_t reg_op_comp_size(const struct reg_op_entry entries[])
+template <size_t N>
+constexpr size_t reg_op_comp_size(const std::array<struct reg_op_entry, N> &entries)
 {
     size_t size = 1;
-    size_t i = 1;
 
-    while (entries[i].offset != 0xFFFF) {
+    for (size_t i = 1; i < N; i++) {
         if (entries[i - 1].value != entries[i].value) {
             size++;
         }
-
-        i++;
     }
 
     return size;
@@ -38,22 +37,21 @@ struct reg_op_compressed_entry {
     uint32_t    value;
 };
 
-template <const struct reg_op_entry orig[]>
+template <size_t N, const std::array<struct reg_op_entry, N> &orig>
 struct reg_op_compressed {
     static constexpr size_t element_count = reg_op_comp_size(orig);
 
-    struct reg_op_compressed_entry entries[element_count];
+    std::array<struct reg_op_compressed_entry, element_count> entries;
 
     consteval reg_op_compressed() : entries()
     {
         size_t repeat_count = 0;
         size_t out_idx = 0;
-        size_t i = 1;
 
         entries[out_idx].offset = orig[0].offset;
         entries[out_idx].value = orig[0].value;
 
-        while (orig[i].offset != 0xFFFF) {
+        for (size_t i = 1; i < orig.size(); i++) {
             if (orig[i - 1].value == orig[i].value) {
                 repeat_count++;
             } else {
@@ -64,8 +62,6 @@ struct reg_op_compressed {
                 entries[out_idx].offset = orig[i].offset;
                 entries[out_idx].value = orig[i].value;
             }
-
-            i++;
         }
 
         entries[out_idx].repeat_count = static_cast<uint16_t>(repeat_count);

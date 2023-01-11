@@ -9,21 +9,19 @@
 
 using namespace hal;
 
-constexpr struct reg_op_entry reg_op[] = {
+constexpr auto reg_op_array = std::to_array<struct reg_op_entry>({
     { 0, 123 },
     { 4, 123 },
     { 8, 123 },
     { 12, 2 },
     { 16, 2 },
+});
 
-    {0xFFFF}
-};
-
-constexpr reg_op_compressed comp = reg_op_compressed<reg_op>();
+constexpr reg_op_compressed comp = reg_op_compressed<reg_op_array.size(), reg_op_array>();
 
 TEST(BitFieldSetTest, BasicTest)
 {
-    EXPECT_EQ(reg_op_comp_size(reg_op), 2);
+    EXPECT_EQ(reg_op_comp_size(reg_op_array), 2);
 
     EXPECT_EQ(comp.element_count, 2);
 

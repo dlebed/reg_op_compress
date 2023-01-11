@@ -36,6 +36,7 @@ add_compile_options(
 	-Werror
 	-Wall
 	-Wextra
+	-pedantic
 	-Wcast-align
 	-Wconversion
 	-Wno-sign-conversion
