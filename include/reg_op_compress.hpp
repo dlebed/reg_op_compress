@@ -16,7 +16,7 @@ struct reg_op_entry {
     uint32_t    value;
 };
 
-consteval size_t reg_op_comp_size(const struct reg_op_entry entries[])
+constexpr size_t reg_op_comp_size(const struct reg_op_entry entries[])
 {
     size_t size = 1;
     size_t i = 1;
@@ -42,7 +42,7 @@ template <const struct reg_op_entry orig[]>
 struct reg_op_compressed {
     static constexpr size_t element_count = reg_op_comp_size(orig);
 
-    struct reg_op_compressed_entry entries[reg_op_comp_size(orig)];
+    struct reg_op_compressed_entry entries[element_count];
 
     consteval reg_op_compressed() : entries()
     {
