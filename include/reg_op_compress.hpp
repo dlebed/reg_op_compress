@@ -43,7 +43,7 @@ struct reg_op_compressed {
 
     std::array<struct reg_op_compressed_entry, element_count> entries;
 
-    consteval reg_op_compressed() : entries()
+    consteval reg_op_compressed() noexcept : entries()
     {
         size_t repeat_count = 0;
         size_t out_idx = 0;
