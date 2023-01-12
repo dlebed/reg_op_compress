@@ -22,7 +22,7 @@ link_libraries(reg-op-compress)
 include(${PROJ_DIR}/cmake/tests.cmake)
 
 # Add tests here
-tests_add_test(test_bitfieldset test_reg_op_compress.cpp)
+tests_add_test(test_reg_op_compress test_reg_op_compress.cpp)
 
 ProcessorCount(N_CPU)
 

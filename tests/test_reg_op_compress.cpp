@@ -19,7 +19,7 @@ constexpr auto reg_op_array = std::to_array<struct reg_op_entry>({
 
 constexpr reg_op_compressed comp = reg_op_compressed<reg_op_array.size(), reg_op_array>();
 
-TEST(BitFieldSetTest, BasicTest)
+TEST(RegOpCompressTest, BasicTest)
 {
     EXPECT_EQ(reg_op_comp_size(reg_op_array), 2);
 
